@@ -1,5 +1,7 @@
 package com.kovintharajan.nexusautoauth.controller;
 
+import com.kovintharajan.nexusautoauth.dto.AuthResponse;
+import com.kovintharajan.nexusautoauth.dto.LoginRequest;
 import com.kovintharajan.nexusautoauth.dto.RegisterRequest;
 import com.kovintharajan.nexusautoauth.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -22,5 +24,10 @@ public class AuthController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body("User registered successfully!");
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
+        return ResponseEntity.ok(authService.login(request));
     }
 }
