@@ -15,6 +15,6 @@ public class CustomAuthEntryPoint implements AuthenticationEntryPoint {
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType("text/plain");
-        response.getWriter().write("Authentication token is missing or invalid.");
+        response.getWriter().write("Unauthorized access.");
     }
 }

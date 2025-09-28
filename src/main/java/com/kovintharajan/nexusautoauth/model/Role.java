@@ -1,7 +1,7 @@
 package com.kovintharajan.nexusautoauth.model;
 
 public enum Role {
-    CUSTOMER,
-    EMPLOYEE,
-    ADMIN
+    ROLE_CUSTOMER,
+    ROLE_EMPLOYEE,
+    ROLE_ADMIN
 }

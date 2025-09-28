@@ -33,7 +33,7 @@ public class AuthService {
         user.setLastName(request.getLastName());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRole(Role.CUSTOMER); // Default role for new users
+        user.setRole(Role.ROLE_CUSTOMER); // Default role for new users
 
         userRepository.save(user);
     }
