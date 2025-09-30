@@ -3,6 +3,7 @@ package com.kovintharajan.nexusautoauth.service;
 import com.kovintharajan.nexusautoauth.dto.AuthResponse;
 import com.kovintharajan.nexusautoauth.dto.LoginRequest;
 import com.kovintharajan.nexusautoauth.dto.RegisterRequest;
+import com.kovintharajan.nexusautoauth.dto.UserResponse;
 import com.kovintharajan.nexusautoauth.exception.EmailAlreadyExistsException;
 import com.kovintharajan.nexusautoauth.model.Role;
 import com.kovintharajan.nexusautoauth.model.User;
@@ -22,8 +23,13 @@ public class AuthService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    public void register(RegisterRequest request) {
+    public AuthResponse register(RegisterRequest request) {
         createUser(request, Role.ROLE_CUSTOMER);
+
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setEmail(request.getEmail());
+        loginRequest.setPassword(request.getPassword());
+        return login(loginRequest);
     }
 
     public void createEmployee(RegisterRequest request) {
@@ -39,7 +45,8 @@ public class AuthService {
         );
         User user = (User) authentication.getPrincipal();
         String jwtToken = jwtService.generateToken(user);
-        return new AuthResponse(jwtToken);
+        UserResponse userResponse = new UserResponse(user);
+        return new AuthResponse(jwtToken, userResponse);
     }
 
     private void createUser(RegisterRequest request, Role role) {
