@@ -1,5 +1,6 @@
 package com.kovintharajan.nexusautoauth.controller;
 
+import com.kovintharajan.nexusautoauth.dto.ChangePasswordRequest;
 import com.kovintharajan.nexusautoauth.dto.UpdateProfileRequest;
 import com.kovintharajan.nexusautoauth.dto.UserResponse;
 import com.kovintharajan.nexusautoauth.service.UserService;
@@ -21,5 +22,11 @@ public class UserController {
     @PutMapping("/me")
     public ResponseEntity<UserResponse> updateMyProfile(@RequestBody UpdateProfileRequest request) {
         return ResponseEntity.ok(userService.updateMyProfile(request));
+    }
+
+    @PatchMapping("/me/password")
+    public ResponseEntity<String> changePassword(@RequestBody ChangePasswordRequest request) {
+        userService.changePassword(request);
+        return ResponseEntity.ok("Password changed successfully.");
     }
 }

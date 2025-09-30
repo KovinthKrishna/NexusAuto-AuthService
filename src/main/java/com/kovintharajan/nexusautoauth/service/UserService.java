@@ -1,5 +1,6 @@
 package com.kovintharajan.nexusautoauth.service;
 
+import com.kovintharajan.nexusautoauth.dto.ChangePasswordRequest;
 import com.kovintharajan.nexusautoauth.dto.UpdateProfileRequest;
 import com.kovintharajan.nexusautoauth.dto.UserResponse;
 import com.kovintharajan.nexusautoauth.exception.InvalidOperationException;
@@ -9,6 +10,7 @@ import com.kovintharajan.nexusautoauth.model.User;
 import com.kovintharajan.nexusautoauth.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +20,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public UserResponse getMyProfile() {
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -31,6 +34,17 @@ public class UserService {
         currentUser.setLastName(request.getLastName());
 
         return new UserResponse(userRepository.save(currentUser));
+    }
+
+    public void changePassword(ChangePasswordRequest request) {
+        User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (!passwordEncoder.matches(request.getCurrentPassword(), currentUser.getPassword())) {
+            throw new InvalidOperationException("Wrong current password");
+        }
+
+        currentUser.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        userRepository.save(currentUser);
     }
 
     public List<UserResponse> getAllEmployees() {
