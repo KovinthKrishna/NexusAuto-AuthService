@@ -33,4 +33,10 @@ public class EmployeeController {
     public ResponseEntity<List<UserResponse>> getAllEmployees() {
         return ResponseEntity.ok(userService.getAllEmployees());
     }
+
+    @PatchMapping("/{id}/status")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<String> toggleEmployeeStatus(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.toggleEmployeeStatus(id));
+    }
 }

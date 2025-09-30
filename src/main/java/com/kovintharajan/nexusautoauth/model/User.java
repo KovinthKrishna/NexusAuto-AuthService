@@ -37,6 +37,8 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private Role role;
 
+    private boolean isEnabled = true;
+
     // Fields required for Two-Factor Authentication (2FA)
     private String phoneNumber;
     private boolean isTfaEnabled = false;
@@ -70,6 +72,6 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return isEnabled;
     }
 }

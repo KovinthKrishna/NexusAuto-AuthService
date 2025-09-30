@@ -11,6 +11,7 @@ public class UserResponse {
     private String lastName;
     private String email;
     private Role role;
+    private boolean isEnabled;
 
     public UserResponse(User user) {
         id = user.getId();
@@ -18,5 +19,6 @@ public class UserResponse {
         lastName = user.getLastName();
         email = user.getEmail();
         role = user.getRole();
+        isEnabled = user.isEnabled();
     }
 }
