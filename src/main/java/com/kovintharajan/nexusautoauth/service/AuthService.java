@@ -23,19 +23,11 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
 
     public void register(RegisterRequest request) {
-        // Check if user already exists
-        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
-            throw new EmailAlreadyExistsException("Email already in use.");
-        }
+        createUser(request, Role.ROLE_CUSTOMER);
+    }
 
-        User user = new User();
-        user.setFirstName(request.getFirstName());
-        user.setLastName(request.getLastName());
-        user.setEmail(request.getEmail());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRole(Role.ROLE_CUSTOMER); // Default role for new users
-
-        userRepository.save(user);
+    public void createEmployee(RegisterRequest request) {
+        createUser(request, Role.ROLE_EMPLOYEE);
     }
 
     public AuthResponse login(LoginRequest request) {
@@ -48,5 +40,20 @@ public class AuthService {
         User user = (User) authentication.getPrincipal();
         String jwtToken = jwtService.generateToken(user);
         return new AuthResponse(jwtToken);
+    }
+
+    private void createUser(RegisterRequest request, Role role) {
+        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+            throw new EmailAlreadyExistsException("Email already in use.");
+        }
+
+        User user = new User();
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
+        user.setEmail(request.getEmail());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setRole(role);
+
+        userRepository.save(user);
     }
 }
