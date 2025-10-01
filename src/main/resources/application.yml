@@ -13,4 +13,4 @@ admin:
   email: ${ADMIN_EMAIL}
   password: ${ADMIN_PASSWORD}
 cors:
-  allowed-origin: ${FRONTEND_ORIGIN}
+  allowed-origin: ${FRONTEND_ORIGIN:http://localhost:3000}

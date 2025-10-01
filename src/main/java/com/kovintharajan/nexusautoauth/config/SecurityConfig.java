@@ -33,7 +33,7 @@ import java.util.List;
 public class SecurityConfig {
     private final UserRepository userRepository;
     private final CustomAuthEntryPoint customAuthEntryPoint;
-    @Value("${cors.allowed-origin:http://localhost:3000}")
+    @Value("${cors.allowed-origin}")
     private String allowedOrigin;
 
     @Bean
