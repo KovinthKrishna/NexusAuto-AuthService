@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,6 +45,7 @@ public class UserService {
         }
 
         currentUser.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        currentUser.setTokensValidFrom(Instant.now());
         userRepository.save(currentUser);
     }
 
@@ -63,6 +65,7 @@ public class UserService {
         }
 
         employee.setEnabled(!employee.isEnabled());
+        employee.setTokensValidFrom(Instant.now());
         userRepository.save(employee);
 
         return "Employee with id: " + employeeId + " successfully " + (employee.isEnabled() ? "enabled." : "disabled.");
